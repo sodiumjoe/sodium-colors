@@ -1,13 +1,23 @@
-# nova-colors
+# sodium-colors
 
-Single source of truth to consume Nova color values
+Forked from [nova](https://github.com/trevordmiller/nova-colors) (archived).
 
-![Screenshot](/assets/screenshot.png?raw=true "Screenshot")
+## Build the website
 
-## Contributing
+```bash
+$ yarn build
+```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md)
+## Build alacritty color scheme
 
-## More info
+```bash
+$ yarn alacritty
+```
 
-**See the [documentation website](https://trevordmiller.com/projects/nova) for more information**
+## Build vim-colortemplate template
+
+1. Install [vim-colortemplate](https://github.com/lifepillar/vim-colortemplate).
+2. `yarn colortemplate`
+3. `vim build/sodium.colortemplate`
+4. `:Colortemplate! ~/.vim`
+5. `:color sodium`

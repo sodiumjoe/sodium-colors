@@ -1,73 +1,73 @@
-const colorValues = {
-  colors: {
-    cyan: '#7FC1CA',
-    blue: '#83AFE5',
-    purple: '#9A93E1',
-    pink: '#D18EC2',
-    red: '#DF8C8C',
-    orange: '#F2C38F',
-    yellow: '#DADA93',
-    green: '#A8CE93',
-  },
-  grays: {
-    gray0: '#1E272C',
-    gray1: '#3C4C55',
-    gray2: '#556873',
-    gray3: '#6A7D89',
-    gray4: '#899BA6',
-    gray5: '#C5D4DD',
-    gray6: '#E6EEF3',
-  },
-}
+const {
+  ansiGroups,
+  colors,
+  syntaxGroups,
+  uiGroups,
+  versionControlGroups
+} = require("./colors");
+const alacritty = require("./alacritty");
 
-export default colorValues
+const makeSection = (list, title) => {
+  return {
+    title,
+    data: list.reduce((acc, item, i) => {
+      if (i % 6 === 0) {
+        acc.push([item]);
+        return acc;
+      }
+      acc[acc.length - 1].push(item);
+      return acc;
+    }, [])
+  };
+};
 
-export const uiGroups = {
-  userActionNeeded: colorValues.colors.red,
-  userCurrentState: colorValues.colors.cyan,
-  backgroundShade: colorValues.grays.gray0,
-  background: colorValues.grays.gray1,
-  foreground: colorValues.grays.gray5,
-  ...colorValues.grays,
-}
+const descriptions = makeSection(
+  [
+    { name: "value / state", color: syntaxGroups.constant },
+    { name: "identifier", color: syntaxGroups.identifier },
+    { name: "global", color: syntaxGroups.global },
+    { name: "emphasis", color: syntaxGroups.emphasis },
+    { name: "action needed", color: uiGroups.userActionNeeded },
+    { name: "special", color: syntaxGroups.special },
+    { name: "statement", color: syntaxGroups.statement },
+    { name: "type", color: syntaxGroups.type },
+    { name: "decoration 1", color: colors.gray0 },
+    { name: "decoration 2", color: colors.gray2 },
+    { name: "decoration 3", color: colors.gray3 },
+    { name: "default black", color: colors.gray1 },
+    { name: "trivial", color: syntaxGroups.trivial },
+    { name: "default text", color: uiGroups.foreground },
+    { name: "decoration", color: colors.gray6 }
+  ],
+  null
+);
 
-export const syntaxGroups = {
-  constant: colorValues.colors.cyan,
-  identifier: colorValues.colors.blue,
-  statement: colorValues.colors.yellow,
-  type: colorValues.colors.green,
-  global: colorValues.colors.purple,
-  emphasis: colorValues.colors.pink,
-  special: colorValues.colors.orange,
-  trivial: colorValues.grays.gray4,
-}
+const format = str =>
+  str
+    .split("")
+    .reduce(
+      (acc, c) =>
+        c === c.toLowerCase() ? `${acc}${c}` : `${acc} ${c.toLowerCase()}`,
+      ""
+    );
 
-export const versionControlGroups = {
-  added: colorValues.colors.green,
-  modified: colorValues.colors.orange,
-  removed: colorValues.colors.red,
-  renamed: colorValues.colors.blue,
-}
+const formatForMustache = obj =>
+  Object.keys(obj).map(key => ({ name: format(key), color: obj[key] }));
 
-export const ansiGroups = {
-  normal: {
-    black: uiGroups.background,
-    red: colorValues.colors.red,
-    green: colorValues.colors.green,
-    yellow: colorValues.colors.yellow,
-    blue: colorValues.colors.blue,
-    magenta: colorValues.colors.purple,
-    cyan: colorValues.colors.cyan,
-    white: uiGroups.foreground,
-  },
-  bright: {
-    black: colorValues.grays.gray4,
-    red: colorValues.colors.orange,
-    green: colorValues.colors.green,
-    yellow: colorValues.colors.yellow,
-    blue: colorValues.colors.blue,
-    magenta: colorValues.colors.pink,
-    cyan: colorValues.colors.cyan,
-    white: colorValues.grays.gray6,
-  },
-}
+module.exports = {
+  ansiGroups,
+  colors,
+  syntaxGroups,
+  uiGroups,
+  versionControlGroups,
+  descriptions,
+  sections: [
+    makeSection(formatForMustache(colors), "colors"),
+    makeSection(formatForMustache(uiGroups), "ui"),
+    makeSection(formatForMustache(syntaxGroups), "synxtax"),
+    makeSection(formatForMustache(versionControlGroups), "version control"),
+    makeSection(formatForMustache(ansiGroups.normal), "ansi (normal)"),
+    makeSection(formatForMustache(ansiGroups.bright), "ansi (bright)")
+  ],
+  alacritty
+};

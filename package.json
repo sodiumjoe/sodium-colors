@@ -1,28 +1,32 @@
 {
-  "name": "nova-colors",
-  "version": "2.1.5",
+  "name": "sodium-colors",
+  "version": "0.0.1",
   "scripts": {
-    "start": "scripts/start",
-    "test": "scripts/test",
-    "build": "scripts/build",
-    "prepublish": "npm run build"
+    "build": "mustache src/index.js src/index.mustache > build/index.html",
+    "colortemplate": "rm build/*.colortemplate && node -e 'console.log(require(\"./src/sodium.colortemplate.js\"))' > build/sodium.colortemplate && cp src/_help.colortemplate build",
+    "alacritty": "node -e 'console.log(require(\"./src/alacritty.js\"))'",
+    "dev": "node server.js & watch 'yarn build' src",
+    "dev-vim": "watch 'yarn colortemplate' src"
   },
   "jest": {
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "babel-cli": "6.16.0",
-    "babel-jest": "15.0.0",
-    "babel-plugin-transform-object-rest-spread": "6.16.0",
-    "babel-preset-latest": "6.16.0",
-    "eslint": "3.4.0",
-    "jest-cli": "15.1.1",
+    "eslint": "6.8.0",
+    "eslint-config-prettier": "6.7.0",
+    "eslint-plugin-node": "10.0.0",
+    "eslint-plugin-prettier": "3.1.2",
+    "mustache": "^3.2.0",
+    "prettier": "1.19.1",
     "watch": "1.0.1"
   },
-  "main": "build/index.js",
-  "description": "Single source of truth to consume Nova color values",
-  "homepage": "https://trevordmiller.github.io/nova",
-  "author": "Trevor D. Miller <trevordmiller@icloud.com> (http://www.trevordmiller.com)",
+  "engines": {
+    "node": ">=8.10.0"
+  },
+  "main": "index.js",
+  "description": "Yet another color scheme",
+  "homepage": "https://github.com/sodiumjoe/sodium-colors",
+  "author": "Joe Moon <joe@xoxomoon.com> (http://www.joe.xoxomoon.com)",
   "license": "MIT",
   "keywords": [
     "color-scheme",
@@ -31,5 +35,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/trevordmiller/nova-colors.git"
-  }
+  },
+  "dependencies": {}
 }
