@@ -1,6 +1,6 @@
 # sodium-colors
 
-You can see the colors [here](https://joe.xoxomoon.com/colors/).
+You can see the colors [here](https://joe.xoxomoon.com/colors).
 
 Forked from [nova](https://github.com/trevordmiller/nova-colors) (archived).
 
